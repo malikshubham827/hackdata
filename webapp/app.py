@@ -14,12 +14,18 @@ from keras.preprocessing import image, sequence
 from keras.layers import Dense, Convolution2D, Dropout, LSTM, TimeDistributed, concatenate, Embedding, Bidirectional, Activation, RepeatVector, Merge
 from keras.optimizers import Nadam
 import tensorflow as tf
+import os
+from keras.models import model_from_json
+
+from werkzeug import secure_filename
+
 
 app = Flask(__name__, instance_relative_config=True)
 # For Plim templates
 mako = MakoTemplates(app)
 app.config['MAKO_PREPROCESSOR'] = preprocessor
 app.config.from_object('config.ProductionConfig')
+
 max_len = 36
 vocab_size = 3346
 
@@ -67,8 +73,12 @@ def preprocess_input(img):
     return img
 
 
-def preprocessing(img_path):
-    im = image.load_img(img_path, target_size=(224, 224, 3))
+def preprocessing(img_path, filename):
+    # print "*-"*10
+    # print filename
+    # print "*-"*10
+    temp = str(os.path.dirname(os.path.abspath(__file__)))+"/"+str(filename)
+    im = image.load_img(temp, target_size=(224, 224, 3))
     im = image.img_to_array(im)
     im = np.expand_dims(im, axis=0)
     im = preprocess_input(im)
@@ -99,48 +109,51 @@ def ml_predict(image):
     return prediction
 
 
-def get_encoding(mod, img):
-    image = preprocessing(img)
-    pred = mod.predict(image)
+def get_encoding(mod, img, filename):
+    img = preprocessing(img, filename)
+    with graph.as_default():
+        with tf.Session(graph=graph) as sess:
+            pred = mod.predict(img)
     pred = np.reshape(pred, pred.shape[1])
     return pred
 
-def rotate_by_exif(image):
-    try :
-        for orientation in ExifTags.TAGS.keys() :
-            if ExifTags.TAGS[orientation]=='Orientation' : break
-        exif=dict(image._getexif().items())
-        if not orientation in exif:
-            return image
-
-        if   exif[orientation] == 3 :
-            image=image.rotate(180, expand=True)
-        elif exif[orientation] == 6 :
-            image=image.rotate(270, expand=True)
-        elif exif[orientation] == 8 :
-            image=image.rotate(90, expand=True)
-        return image
-    except:
-        traceback.print_exc()
-        return image
-
-THRESHOLD = 0.5
 @app.route('/predict', methods=['POST'])
 def predict():
     # Load image
     img = request.files['file']
-    img = Image.open(image)
+    img.save(secure_filename(img.filename))
+    filename = img.filename
+    img = Image.open(img)
     # image = rotate_by_exif(image)
     # resized_image = imresize(image, (224, 224)) / 255.0
-    vgg = VGG16(weights='imagenet', include_top=True, input_shape=(224,224,3))
-    vgg = Model(inputs=vgg.input, outputs=vgg.layers[-2].output)
-    resized_image = get_encoding(vgg, img)
+    # print "asdasdsdafgfewafwaef\n"
+
+
+
+    # vgg = VGG16(weights='imagenet', include_top=True, input_shape=(224,224,3))
+
+    with open('./../Model/vgg16', 'rb') as f:
+        json_string = pickle.load(f)
+
+    
+    vgg = model_from_json(json_string)
+
+
+
+    # print "AFTERRRRRRRR\n"
+    # vgg.summary()
+    # print "*-"*10
+    # print img.filename
+    # print "*-"*10
+    # vgg = Model(inputs=vgg.input, outputs=vgg.layers[-2].output)
+    resized_image = get_encoding(vgg, img, filename)
 
 
     # Model input shape = (224,224,3)
     # [0:3] - Take only the first 3 RGB channels and drop ALPHA 4th channel in case this is a PNG
-    prediction = ml_predict(resized_image[:, :, 0:3])
-    print('PREDICTION COUNT', (prediction[:, :, 1]>0.5).sum())
+    print type(resized_image)
+    prediction = ml_predict(resized_image)
+    # print('PREDICTION COUNT', (prediction[:, :, 1]>0.5).sum())
 
     # Resize back to original image size
     # [:, :, 1] = Take predicted class 1 - currently in our model = Person class. Class 0 = Background
@@ -149,8 +162,8 @@ def predict():
     # prediction[prediction<THRESHOLD*255] = 0
 
     # Append transparency 4th channel to the 3 RGB image channels.
-    transparent_image = np.append(np.array(image)[:, :, 0:3], prediction[: , :, None], axis=-1)
-    transparent_image = Image.fromarray(transparent_image)
+    # transparent_image = np.append(np.array(image)[:, :, 0:3], prediction[: , :, None], axis=-1)
+    # transparent_image = Image.fromarray(transparent_image)
 
 
     # Send back the result image to the client
@@ -167,3 +180,4 @@ def homepage():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
+    app.run(debug=False)
