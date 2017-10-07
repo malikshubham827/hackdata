@@ -2,10 +2,13 @@
   "name": "hackdata",
   "version": "1.0.0",
   "description": "HackData hackathon app",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server/server.js",
     "test": "nodemon --exec npm start"
+  },
+  "engines": {
+    "node": "8.1.4"
   },
   "repository": {
     "type": "git",
