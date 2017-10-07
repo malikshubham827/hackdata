@@ -1,3 +1,7 @@
 .floyd*
 *.img
 node_modules/
+env/
+Model/*.npy
+Model/*.p
+Model/*.h5
