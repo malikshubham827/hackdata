@@ -11,6 +11,8 @@ import numpy as np
 from keras.models import load_model, Sequential, Model
 from keras.applications import VGG16
 from keras.preprocessing import image, sequence
+from keras.layers import Dense, Convolution2D, Dropout, LSTM, TimeDistributed, concatenate, Embedding, Bidirectional, Activation, RepeatVector, Merge
+from keras.optimizers import Nadam
 import tensorflow as tf
 
 app = Flask(__name__, instance_relative_config=True)
@@ -19,6 +21,7 @@ mako = MakoTemplates(app)
 app.config['MAKO_PREPROCESSOR'] = preprocessor
 app.config.from_object('config.ProductionConfig')
 max_len = 36
+vocab_size = 3346
 
 with open('./model/indices_2_word.p', 'rb') as f:
     indices_2_word = pickle.load(f)
@@ -28,8 +31,32 @@ with open('./model/word_2_indices.p', 'rb') as f:
 
 # Preload our model
 print("Loading model")
-model = load_model('./model/model.h5', compile=False)
+# model = load_model('./model/model.h5', compile=False)
 graph = tf.get_default_graph()
+
+
+embedding_size = 128
+image_model = Sequential()
+
+image_model.add(Dense(embedding_size, input_shape=(4096,), activation='relu'))
+image_model.add(RepeatVector(max_len))
+
+language_model = Sequential()
+
+language_model.add(Embedding(input_dim=vocab_size, output_dim=embedding_size, input_length=max_len))
+language_model.add(LSTM(256, return_sequences=True))
+language_model.add(TimeDistributed(Dense(embedding_size)))
+
+model = Sequential()
+
+model.add(Merge([image_model, language_model], mode='concat', concat_axis=-1))
+model.add(Bidirectional(LSTM(1000, return_sequences=False)))
+model.add(Dense(vocab_size))
+model.add(Activation('softmax'))
+
+model.load_weights("./model/second_weights.h5")
+model.compile(loss='categorical_crossentropy', optimizer=Nadam(), metrics=['accuracy'])
+
 
 
 def preprocess_input(img):
