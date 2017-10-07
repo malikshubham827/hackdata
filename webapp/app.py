@@ -1,7 +1,7 @@
 import io, traceback
 
 from flask import Flask, request, g
-from flask import send_file
+from flask import send_file, jsonify
 from flask_mako import MakoTemplates, render_template
 from plim import preprocessor
 import pickle
@@ -151,7 +151,7 @@ def predict():
 
     # Model input shape = (224,224,3)
     # [0:3] - Take only the first 3 RGB channels and drop ALPHA 4th channel in case this is a PNG
-    print type(resized_image)
+    # print resized_image.shape
     prediction = ml_predict(resized_image)
     # print('PREDICTION COUNT', (prediction[:, :, 1]>0.5).sum())
 
@@ -171,7 +171,8 @@ def predict():
     # transparent_image.save(byte_io, 'PNG')
     # byte_io.seek(0)
     # return send_file(byte_io, mimetype='image/png')
-    return prediction
+    # print prediction
+    return jsonify(prediction)
 
 @app.route('/')
 def homepage():
