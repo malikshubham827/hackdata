@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024px" height="1024px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+    <title>logo</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="logo">
+            <g id="Group" transform="translate(198.000000, 192.000000)">
+                <rect id="Rectangle" fill="#B8E986" x="0" y="0" width="628" height="628"></rect>
+                <polygon id="V" fill="#000000" transform="translate(322.000000, 314.000000) rotate(-180.000000) translate(-322.000000, -314.000000) " points="396.762791 626 604 2 462.344186 2 321.562791 440.722689 319.813953 440.722689 180.781395 2 40 2 241.990698 626"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

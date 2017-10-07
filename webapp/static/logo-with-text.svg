@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="2566px" height="1024px" viewBox="0 0 2566 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+    <title>logo-with-text</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="logo-with-text">
+            <rect id="Rectangle" fill="#B8E986" x="198" y="192" width="628" height="628"></rect>
+            <polygon id="V" fill="#000000" transform="translate(520.000000, 506.000000) rotate(-180.000000) translate(-520.000000, -506.000000) " points="594.762791 818 802 194 660.344186 194 519.562791 632.722689 517.813953 632.722689 378.781395 194 238 194 439.990698 818"></polygon>
+            <text id="GreenScreen" font-family="HelveticaNeue-Bold, Helvetica Neue" font-size="250" font-weight="bold" fill="#000000">
+                <tspan x="887" y="617">GreenScreen</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

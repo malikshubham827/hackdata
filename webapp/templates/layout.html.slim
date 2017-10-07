@@ -1,0 +1,41 @@
+doctype html
+/!if lt IE 7 ]><html class="ie ie6" lang="en">
+/!if IE 7 ]><html class="ie ie7" lang="en">
+/!if IE 8 ]><html class="ie ie8" lang="en">
+/! [if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]
+head
+  meta charset='utf-8'
+  title= "%s - %s" % (config['SITE_NAME'], config['TAGLINE'])
+  meta name='description' content=config['SITE_DESCRIPTION']
+  meta name='keywords' content=config['SITE_KEYWORDS']
+
+  // Mobile Specific
+  meta(name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1')
+  meta http-equiv="X-UA-Compatible" content="IE=edge"
+
+  // CSS
+  link rel="stylesheet" media="print,screen" href='//fonts.googleapis.com/css?family=Open+Sans:400,700,800|Open+Sans+Condensed:300,700'
+  link rel="stylesheet" media="print,screen" href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'
+  link rel="stylesheet" media="print,screen" href='static/dropzone.css'
+  link rel="stylesheet" media="print,screen" href='static/application.css'
+  /= stylesheet_link_tag 'application', media: 'print,screen'
+
+body
+  .text-center
+    a href='/'
+      img src='static/logo-with-text.svg' alt=("%s - %s" % (config['SITE_NAME'], config['TAGLINE'])) width="50%"
+
+  #content = next.body()
+
+
+
+  script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"
+  script src="static/exif.js"
+  script src="static/dropzone.js"
+  script src="static/application.js"
+  = next.javascripts()
+  script
+    !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="4.0.0";
+    analytics.load("A55Cp0t0RuEzcoHHlVrjMbZszLooscLR");
+    analytics.page();
+    }}();

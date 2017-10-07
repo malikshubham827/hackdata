@@ -1,3 +1,5 @@
 .floyd*
 *.img
 node_modules/
+*.h5
+*.p
