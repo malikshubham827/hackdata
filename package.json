@@ -1,0 +1,30 @@
+{
+  "name": "hackdata",
+  "version": "1.0.0",
+  "description": "HackData hackathon app",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "nodemon --exec npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/malikshubham827/hackdata.git"
+  },
+  "author": "Shubham Malik",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/malikshubham827/hackdata/issues"
+  },
+  "homepage": "https://github.com/malikshubham827/hackdata#readme",
+  "devDependencies": {
+    "ejs": "^2.5.7",
+    "nodemon": "^1.12.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.1",
+    "multer": "^1.3.0",
+    "path": "^0.12.7"
+  }
+}
