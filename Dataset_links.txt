@@ -1,0 +1,5 @@
+Dataset Link, taken first 1k images from flickr-8k dataset for training
+
+https://transfer.sh/BcD4G/hackdata_dataset.zip #Dataset Link
+
+https://transfer.sh/bZPgD/Flickr8k.token.txt #captions link
