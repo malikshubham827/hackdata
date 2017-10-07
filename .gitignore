@@ -1,5 +1,7 @@
 .floyd*
 *.img
 node_modules/
-*.h5
+env/
+*.npy
 *.p
+*.h5
